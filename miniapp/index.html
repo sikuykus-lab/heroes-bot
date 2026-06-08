@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Vought · Магазин</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Roboto+Condensed:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <div class="texture"></div>
+  <div class="splatter splatter--tl"></div>
+  <div class="splatter splatter--br"></div>
+
+  <div id="app" class="vought">
+    <!-- Top bar -->
+    <header class="topbar">
+      <div class="topbar__row">
+        <div class="vought-logo" aria-label="Vought International">
+          <svg viewBox="0 0 48 48" class="vought-logo__mark">
+            <path d="M24 4 L44 40 H4 Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            <text x="24" y="32" text-anchor="middle" font-size="16" font-weight="700" fill="currentColor" font-family="Oswald,sans-serif">V</text>
+          </svg>
+          <span class="vought-logo__text">VOUGHT<br><em>INTERNATIONAL</em></span>
+        </div>
+        <div class="currency" id="balance">
+          <span class="currency__coin">V</span>
+          <span class="currency__value">—</span>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Навигация">
+        <span class="nav__item">Главная</span>
+        <span class="nav__item">Боевой пропуск</span>
+        <span class="nav__item nav__item--active">Магазин</span>
+        <span class="nav__item">Хранилище</span>
+        <span class="nav__item">Профиль</span>
+      </nav>
+
+      <div class="user-widget" id="user-widget">
+        <div class="user-widget__avatar" id="user-avatar">?</div>
+        <div class="user-widget__info">
+          <div class="user-widget__name" id="user-name">Загрузка…</div>
+          <div class="user-widget__role" id="user-role">—</div>
+          <div class="user-widget__meta">
+            <span id="user-tier">—</span>
+            <span class="user-widget__dot">·</span>
+            <span id="user-virus">вирус 0</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page title -->
+    <div class="page-head">
+      <p class="page-head__eyebrow">Compound V</p>
+      <h1 class="page-head__title">Магазин</h1>
+      <p class="page-head__status" id="page-status">Загрузка профиля…</p>
+    </div>
+
+    <div id="lock-banner" class="lock-banner hidden">
+      <span class="lock-banner__mark">!</span>
+      Магазин закрыт — идёт бой
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+
+    <!-- V24 -->
+    <section class="block">
+      <div class="section-rule"><span>V24 · пробный</span></div>
+      <div class="v24-row">
+        <button class="btn-gold" id="btn-v24-free" data-action="v24_free">
+          <span class="btn-gold__icon">🎁</span>
+          <span class="btn-gold__text">
+            <strong>Бесплатно</strong>
+            <small id="v24-free-sub">раз в 5 мин</small>
+          </span>
+        </button>
+        <button class="btn-outline" id="btn-v24-paid" data-action="v24_paid">
+          <span class="btn-outline__icon">⚡</span>
+          <span class="btn-outline__text">
+            <strong>V24</strong>
+            <small id="price-v24-paid">10 coin · 2 боя</small>
+          </span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Super V -->
+    <section class="block">
+      <div class="section-rule"><span>Супер-V</span></div>
+      <div class="product-grid">
+        <button class="product product--v" id="btn-v" data-action="v">
+          <div class="product__icon-wrap">💉</div>
+          <div class="product__body">
+            <div class="product__title">V — бессрочно</div>
+            <div class="product__desc">Случайный герой из пула V</div>
+            <div class="product__price" id="price-v">150 coin</div>
+          </div>
+        </button>
+        <button class="product product--v1" id="btn-v1" data-action="v1">
+          <div class="product__icon-wrap">🛡</div>
+          <div class="product__body">
+            <div class="product__title">V1 — элита</div>
+            <div class="product__desc">Иммунитет к вирусу · топ-герои</div>
+            <div class="product__price" id="price-v1">1000 coin</div>
+          </div>
+        </button>
+      </div>
+    </section>
+
+    <!-- Consumables -->
+    <section class="block">
+      <div class="section-rule"><span>Расходники</span></div>
+      <button class="product product--wide product--virus" id="btn-virus" data-action="virus">
+        <div class="product__icon-wrap">☣</div>
+        <div class="product__body">
+          <div class="product__title">Вирус</div>
+          <div class="product__desc" id="virus-hint">Предмет в бою</div>
+          <div class="product__price" id="price-virus">1500 coin</div>
+        </div>
+      </button>
+    </section>
+
+    <!-- Heroes -->
+    <section class="block" id="characters-section">
+      <div class="section-rule"><span>Смена героя</span></div>
+      <p class="block-hint" id="switch-hint"></p>
+      <div class="char-list" id="char-list"></div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="site-footer__brand">
+        <span class="the-boys-logo">THE BOYS</span>
+      </div>
+      <p class="site-footer__slogan">
+        Vought International — защищаем вас.<br>
+        Понравится это или нет.
+      </p>
+      <div class="site-footer__status" id="server-status">
+        <span class="status-dot status-dot--load"></span>
+        Соединение…
+      </div>
+    </footer>
+  </div>
+
+  <script src="/assets/app.js"></script>
+</body>
+</html>

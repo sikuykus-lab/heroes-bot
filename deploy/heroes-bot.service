@@ -1,0 +1,15 @@
+[Unit]
+Description=Telegram Superheroes Game Bot
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/heroes-bot
+EnvironmentFile=/opt/heroes-bot/.env
+ExecStart=/opt/heroes-bot/.venv/bin/python heroes_bot.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
